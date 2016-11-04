@@ -1,0 +1,5 @@
+
+
+@TestAnnotation object Test0 {
+
+}

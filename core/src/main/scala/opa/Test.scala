@@ -9,12 +9,9 @@ object Test extends App {
 
 
 
-@TestAnnotation object Test extends App {
+object Test extends App {
   class Best
-  //
-  @TestAnnotation2 def aaa(): Unit = { println("A") }
-  //@TestAnnotation def bbb(): Unit = { println("A") }
 
-  //(new Best)
-  aaa()
+
+  Test0.lello
 }
