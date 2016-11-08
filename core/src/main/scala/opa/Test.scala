@@ -13,5 +13,5 @@ object Test extends App {
   class Best
 
 
-  Test0.lello
+  //Test0.lello
 }
