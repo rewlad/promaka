@@ -1,0 +1,88 @@
+
+!best intro to formats:
+https://martin.kleppmann.com/2012/12/05/schema-evolution-in-avro-protocol-buffers-thrift.html
+
+research:
+    serialization performance, schema evolution, fit with lang/build-tool/ide?
+    schema evolution: add/remove/remame fields, remove event type, split event
+    http://martin.kleppmann.com/2012/12/05/schema-evolution-in-avro-protocol-buffers-thrift.html
+    https://github.com/eishay/jvm-serializers/wiki
+    IDL: Avro(confluentinc/schema-registry) / Thrift / ProtocolBuffer(akka def) -- all has perl
+    scalapenos/stamina -- schema evolution halper for akka persistence, but spray-json only :-(
+    protobuf -- 12K stars, google, field is tagged, optional similar to repeated
+    avro -- 600 stars, hadoop, kafka, newer, no static compilation, interoperability with dynamic languages,
+        attach hash of schema, schema registry, "file" is tagged; 
+        give reader 2 schemas for resolution, enforces compatibility,
+        1.5 slower
+    thrift -- 3K stars, facebook, multiple encodings (bin vs json, speed vs size), rpc, more data structures like Map and Set
+    ASN.1 -- old, complex
+    msgpack -- 3K stars, json binary encoding, (-) field names inside like in json, (-) no case classes
+    parquet -- efficient columnar storage format!, hadoop, spark, over thrift
+    Cap’n Proto -- 4K stars, fast, encoding is closest to in-memory representation, new fields added to the end of a struct,
+        mmap between langs!, parse in accessors, less alloc-s!, by author of protobuf,
+        c++ rpc with promise pipelining and alloc for connection,
+        java ok (-?)
+    Flatbuffers -- 
+        google, 7K stars, no-parsing (accessors), small deps, small generated code;
+        no tags, add to the end, said to be very fast (https://google.github.io/flatbuffers/flatbuffers_benchmarks.html) 
+        no dictionaries natively, but emulate their behavior with vectors and binary search
+    Kryo -- 2K stars, jvm only, fast for medium (>1K) objects, twitter/chill for scala
+    colfer -- fast, no tags
+    FST -- fast
+    https://medium.com/@dkomanov/scala-serialization-419d175c888a#.aqzld4t1j
+    !! ScalaPB -- fast compiler for protobuf 3, lenses, to json too, grpc
+    twitter/scrooge -- scala thrift; may become replacement for the apache thrift code generator
+    sksamuel/avro4s -- avro to case classes and back
+    protocol-buffer-plsql?
+    protocol-buffer label rename?
+    ide?
+    choosing not popular (thr,protob) makes less than 2 times faster;
+    !!! protobuf: most popular, nice ScalaPB generator, simple, android, 
+        does not encode the message type: https://developers.google.com/protocol-buffers/docs/techniques
+    avro: kafka recommends, registry, evolution?, from classes
+    thrift: more structures?, customizable?, parquet, poor docs
+    flatbuffers: accessors
+    protostuff -- what is idl? mutables
+    protobuf: для кроссплатформенной сборки можно подсмотреть тут: https://github.com/grpc/grpc-java (после строки «For protobuf-based codegen integrated with the Maven build system, you can use protobuf-maven-plugin»)
+    wire-compiler -- protobuf with "Effective Java"
+        http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.squareup.wire%22%20AND%20a%3A%22wire-compiler%22
+        dalvik bytecode format can have only 64K methods per application
+        (-) reflrction based deser?, not eff?
+        nulls? tune types generation?
+    avro -- 
+        @java-class("java.math.BigDecimal") string value; 
+        sort order?
+        logicalType decimal/timestamp-millis
+        (-) makes mutable java objects
+        (-) I've not found how to generate BigDecimal
+    avro4s -- I've not found how to generate scala?
+    fb and cassandra has thrift API;
+
+we need:
+    make own generator to support BigDecimal/Instant/UUID/Map[Id,_];
+    idl with id-s for evolution;
+    ?idl to json
+    generated code (immutable,effective)
+
+status:
+    avro -- no ids (annotations), unclear eff calls, immutable how?
+            use alt idl only?
+    scrooge -- rewrite templates, eff?
+        scrooge-generator/src/main/resources/scalagen
+    scalapb -- customize?
+    wire
+
+downloaded:
+    avro:
+        sksamuel/avro4s
+        avro-1.8.1.jar avro-thrift-1.8.1.jar  avro-tools-1.8.1.jar
+    ScalaConsultants/macro-fun
+    scalamacros/sbt-example-paradise
+    ! olafurpg/scalameta-macro-template.git
+    scalapbc-0.5.43.zip
+    protoc-3.1.0-linux-x86_64.zip
+    
+ideas:
+    Oracle PL SQL plugin (proto)
+    Alternate encodings (JSON, XML, HTML) for Java protobufs
+    real-logic/simple-binary-encoding

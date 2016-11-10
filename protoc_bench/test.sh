@@ -1,0 +1,1 @@
+PATH=/web/_data/jdk/bin:$PATH sbt -J-Xmx10G -J-Xms7G run

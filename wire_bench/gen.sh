@@ -1,0 +1,1 @@
+PATH=/web/_data/jdk/bin:$PATH java -jar compiler.jar --proto_path=. --java_out=. test.proto

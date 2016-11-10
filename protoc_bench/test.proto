@@ -1,0 +1,28 @@
+
+
+syntax = "proto3";
+
+
+message Unknown {
+    string dataType = 1;
+    bytes data = 2;
+}
+
+message Instant {
+    int64 seconds = 1;
+    int32 nanos = 2;
+}
+
+
+message BigDecimal {
+    BigInteger intVal = 1;
+    int32 scale = 2;
+}
+
+message BigInteger {
+    int32 signum = 1;
+    int32 mag = 2;    //?
+}
+
+
+// option optimize_for = LITE_RUNTIME;

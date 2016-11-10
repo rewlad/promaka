@@ -1,0 +1,20 @@
+
+message Event { 
+  required UUID objId = 1;
+  required UUID typeId = 2; //attrId or labelId
+  required bytes value = 3;
+}
+
+message EventGroup { //evh
+    required UUID eventGroupTypeId = 2;
+    required string comment = 3;
+    required bytes params = 4;
+    repeated Event evl = 4;
+}
+
+message User { //evl value
+    // typeId 0x4567
+    optional string login = 1;
+    optional string surname = 4;
+    ...
+}
