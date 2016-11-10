@@ -10,8 +10,4 @@ object Test extends App {
 
 
 object Test extends App {
-  class Best
-
-
-  Test0.lello
 }

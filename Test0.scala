@@ -31,13 +31,13 @@ trait GeoPoint {
 @LabelId(0x0298) trait Area extends Master with Caption {
     def areaName = caption
     @PropId(0x000a) def osmData: String
-    @PropId(0x0001) def startPoint: GeoPoint
-    @PropId(0x0002) def endPoint: GeoPoint
-    0x014c; def zones: List[GivesLife[Zone]]
+    @PropId(0x0001) def startPoint: GeoPoint //index
+    @PropId(0x0002) def endPoint: GeoPoint //index
+    0x014c; def zones: List[GivesLife[Zone]] //index
     ???
 }
 
-@LabelId(0x0154) trait Zone {
+@LabelId(0x0154) trait Zone { //index
     @PropId(0x1003) def osmPoints: List[GeoPoint]
 }
 

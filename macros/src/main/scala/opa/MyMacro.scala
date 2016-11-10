@@ -3,35 +3,46 @@ import scala.annotation.StaticAnnotation
 import scala.language.experimental.macros
 import scala.reflect.macros.blackbox
 
+class Id(id: Int) extends StaticAnnotation
 
-class TestAnnotation extends StaticAnnotation {
+class Schema extends StaticAnnotation {
   def macroTransform(annottees: Any*) = macro MyMacro.impl
 }
 
 object MyMacro {
   def impl(c: blackbox.Context)(annottees: c.Expr[Any]*): c.Expr[Any] = {
     import c.universe._
-    val result: c.universe.Tree =
-      annottees.map(_.tree).toList match {
-        case q"""object $objectName {
-                  ..$body
-                }""" :: Nil ⇒
-          println("FFF")
-              q"""object $objectName {
-                  ..$body
-                  def lello = println("GGG")
-                }"""
-        case branch :: Nil ⇒
-          println("DDD")
-          println("DDD",branch)
-          //???
-          branch
-        case branches ⇒
-          println("AAA")
-          println(branches)
-          ???
-      }
-    c.Expr[Any](result)
+    val q"""object $objectName { ..$traits }""" :: Nil = annottees.map(_.tree).toList
+    //println(6,traits.head.getClass) //.asInstanceOf[ClassDef]
+    traits.map{
+      case q"..$mods trait ${TypeName(traitName)} { ..$traitBody }" ⇒
+        /*mods.annotations.map{
+          case q"@$expr" ⇒ println(7,expr)
+        }*/
+
+
+
+        val Modifiers(flags, TypeName(""), annotations) = mods
+        annotations.collect {
+          case q"\@Id($id)" ⇒ println(6,id)
+        }
+
+        //println(1,flags)
+        //println(2,mName,mName.getClass)
+        println(3,annotations.headOption)
+
+        println(5,mods.annotations)
+        println(2,showRaw(traitName), traitName.getClass)
+        //println(3,template)
+        println(4,showRaw(traitBody))
+    }
+
+
+
+
+
+
+    c.Expr[Any](q"""object $objectName { ..$traits }""")
   }
 
 /*
