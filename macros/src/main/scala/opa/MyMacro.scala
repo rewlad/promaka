@@ -1,6 +1,9 @@
 
+package schema
+
 import scala.annotation.StaticAnnotation
 import scala.language.experimental.macros
+import scala.reflect.api.Trees
 import scala.reflect.macros.blackbox
 
 class Id(id: Int) extends StaticAnnotation
@@ -12,6 +15,7 @@ class Schema extends StaticAnnotation {
 object MyMacro {
   def impl(c: blackbox.Context)(annottees: c.Expr[Any]*): c.Expr[Any] = {
     import c.universe._
+/*
     val q"""object $objectName { ..$traits }""" :: Nil = annottees.map(_.tree).toList
     //println(6,traits.head.getClass) //.asInstanceOf[ClassDef]
     traits.map{
@@ -36,13 +40,37 @@ object MyMacro {
         //println(3,template)
         println(4,showRaw(traitBody))
     }
-
-
-
-
-
-
     c.Expr[Any](q"""object $objectName { ..$traits }""")
+*/
+
+
+/*
+    val result: c.universe.Tree =
+      annottees.map(_.tree).toList match {
+        case q"""object $objectName { ..$body }""" :: Nil ⇒
+          //println("M",showRaw(body))
+
+          body.map{
+            //case q"$mods def $tname[..$tparams](...$paramss): $tpt = $expr" ⇒
+            //  println("D1",showRaw(tname))
+            case b@q"$mods trait $tpname extends ..$parents { ..$stats }"  ⇒
+              println("N1",showRaw(mods))
+              println(b.getClass)
+              println(b.asInstanceOf[Tree].tpe.baseClasses)
+              println("N2",showRaw(tpname))
+              println("N5",showRaw(parents))
+              println("N7",showRaw(stats))
+            case q"$u" ⇒   println("U0",showRaw(u)); println("U1",u)
+          }
+
+
+              q"""object $objectName {
+                  ..$body
+                  def lello = println("GGG")
+                }"""
+      }
+    c.Expr[Any](result)
+*/
   }
 
 /*
